@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32922.545
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortalStore.Core", "ProtalStore.Core\PortalStore.Core.csproj", "{E5F5673D-BA77-4D71-B196-596626633C3B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortalStore.Data", "PortalStore.Data\PortalStore.Data.csproj", "{F3DE5558-8B0E-4DC1-948D-6165E66D5611}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortalStore.Service", "PortalStore.Service\PortalStore.Service.csproj", "{738C8FAA-A366-41E7-8069-A9AF4C051774}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortalStore.DTO", "PortalStore.DTO\PortalStore.DTO.csproj", "{4F90551B-757D-4748-B8E8-AE403F20F3FA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortalStore.API", "PortalStore.API\PortalStore.API.csproj", "{2C50C294-97A4-485E-9718-1E11F3FB42F9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortalGrup.WebUI", "PortalGrup.WebUI\PortalGrup.WebUI.csproj", "{2917A91B-BCD1-4053-9851-5D39967C4EC1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E5F5673D-BA77-4D71-B196-596626633C3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5F5673D-BA77-4D71-B196-596626633C3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5F5673D-BA77-4D71-B196-596626633C3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5F5673D-BA77-4D71-B196-596626633C3B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3DE5558-8B0E-4DC1-948D-6165E66D5611}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3DE5558-8B0E-4DC1-948D-6165E66D5611}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3DE5558-8B0E-4DC1-948D-6165E66D5611}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3DE5558-8B0E-4DC1-948D-6165E66D5611}.Release|Any CPU.Build.0 = Release|Any CPU
+		{738C8FAA-A366-41E7-8069-A9AF4C051774}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{738C8FAA-A366-41E7-8069-A9AF4C051774}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{738C8FAA-A366-41E7-8069-A9AF4C051774}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{738C8FAA-A366-41E7-8069-A9AF4C051774}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F90551B-757D-4748-B8E8-AE403F20F3FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F90551B-757D-4748-B8E8-AE403F20F3FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F90551B-757D-4748-B8E8-AE403F20F3FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F90551B-757D-4748-B8E8-AE403F20F3FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C50C294-97A4-485E-9718-1E11F3FB42F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C50C294-97A4-485E-9718-1E11F3FB42F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C50C294-97A4-485E-9718-1E11F3FB42F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C50C294-97A4-485E-9718-1E11F3FB42F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2917A91B-BCD1-4053-9851-5D39967C4EC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2917A91B-BCD1-4053-9851-5D39967C4EC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2917A91B-BCD1-4053-9851-5D39967C4EC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2917A91B-BCD1-4053-9851-5D39967C4EC1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {557A1A21-1D16-4CA7-8A48-CEEAAF23A238}
+	EndGlobalSection
+EndGlobal
