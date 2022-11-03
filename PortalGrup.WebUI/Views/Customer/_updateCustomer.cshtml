@@ -1,0 +1,23 @@
+﻿@using PortalStore.DTO.Customer
+@model CustomerListDto
+<div class="modal-body">
+    <input type="text" placeholder="Müşteri Adı" id="NameUpdate" value="@Model.FirstName" class="form-control" name="FirstName" />
+</div>
+<div class="modal-body">
+    <input type="text" placeholder="Müşteri Soyadı" id="SurnameUpdate" value="@Model.LastName" class="form-control" name="LastName" />
+</div>
+<div class="modal-body">
+    <input type="email" placeholder="Müşteri Email" id="MailUpdate" class="form-control" value="@Model.Email" name="Email" />
+</div>
+<div class="modal-body">
+    <input type="number" placeholder="Müşteri TC" id="TCUpdate" class="form-control" value="@Model.TCID" name="TCID" />
+</div>
+<div class="modal-body">
+    <input type="date" placeholder="Müşteri Doğum TarihiUpdate" id="birthDateUpdate" class="form-control" value="@Model.BirthDate.ToString("yyyy-MM-dd")" name="BirthDate" />
+</div>
+<div class="modal-body">
+    <input type="tel" placeholder="Müşteri Telefon NumarasıUpdate" id="gsmUpdate" class="form-control" value="@Model.GSM" name="GSM" />
+</div>
+<div class="modal-footer">
+    <button type="button" onclick="CheckCustomerUpdate()" class="btn btn-dark">Kaydet</button>
+</div>

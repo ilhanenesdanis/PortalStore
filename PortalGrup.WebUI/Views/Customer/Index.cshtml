@@ -1,0 +1,164 @@
+﻿@using PortalStore.DTO.Customer
+@model CustomResponseDto<List<CustomerListDto>>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row mt-2 mb-3">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                @if (Model.Data.Count > 0)
+                {
+                    <div class="row">
+                        <div class="col-m-12 mb-2">
+                            <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#dark-header-modal">Yeni Müşteri Ekle</button>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Düzenle</th>
+                                            <th>Müşteri Adı Soyadı</th>
+                                            <th>Müşteri Email</th>
+                                            <th>Doğum Tarihi</th>
+                                            <th>Aktif/Pasif</th>
+                                            <th>Müşteri Adresleri</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.Data)
+                                        {
+                                            <tr>
+                                                <td><button onclick="UpdateCustomer(@item.Id)" class="btn btn-danger">Güncelle</button></td>
+                                                <td>@item.FirstName @item.LastName</td>
+                                                <td>@item.Email</td>
+                                                <td>@item.BirthDate.ToShortDateString()</td>
+                                                <td><button class="btn btn-info" onclick="ChangeStatus(@item.Id)">@(item.Status == true ? "Pasif Yap" : "Aktif Yap")</button></td>
+                                                <td><a href="javascript:void(0)" class="btn btn-info" >Müşteri Adresleri</a></td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<div id="dark-header-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dark-header-modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="AddCustomer" asp-controller="Customer"
+                  data-ajax="true" data-ajax-method="POST"
+                  data-ajax-success="OnSuccess" id="AddCustomerForm">
+                <div class="modal-header modal-colored-header bg-dark">
+                    <h4 class="modal-title" id="dark-header-modalLabel">Yeni Müşteri Ekle</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" placeholder="Müşteri Adı" id="Name" class="form-control" name="FirstName" />
+                </div>
+                <div class="modal-body">
+                    <input type="text" placeholder="Müşteri Soyadı" id="Surname" class="form-control" name="LastName" />
+                </div>
+                <div class="modal-body">
+                    <input type="email" placeholder="Müşteri Email" id="Mail" class="form-control" name="Email" />
+                </div>
+                <div class="modal-body">
+                    <input type="number" placeholder="Müşteri TC" id="TC" class="form-control" name="TCID" />
+                </div>
+                <div class="modal-body">
+                    <input type="date" placeholder="Müşteri Doğum Tarihi" id="birthDate" class="form-control" name="BirthDate" />
+                </div>
+                <div class="modal-body">
+                    <input type="tel" placeholder="Müşteri Telefon Numarası" id="gsm" class="form-control" name="GSM" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" onclick="CheckCustomer()" class="btn btn-dark">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div id="dark-header-modal-update" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dark-header-modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="AddCustomer" asp-controller="Customer"
+                  data-ajax="true" data-ajax-method="POST"
+                  data-ajax-success="OnSuccess" id="UpdateForm">
+                <div class="modal-header modal-colored-header bg-dark">
+                    <h4 class="modal-title" id="dark-header-modalLabel">Yeni Müşteri Ekle</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                </div>
+                <div id="updateArea">
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        function OnSuccess() {
+            $('#dark-header-modal').modal('hide');
+            $('#dark-header-modal-update').modal('hide');
+            Swal.fire('İşlem Başarılı!', '', 'success')
+            LoadPage();
+        }
+        function CheckCustomer(){
+            var name=$('#Name').val();
+            var surname=$('#Surname').val();
+            var BirthDate = $('#birthDate').val();
+            var tc = $('#TC').val();
+            $.ajax({
+                url: '/Customer/CheckTc',
+                data: { name: name, surname: surname, BirthDate: BirthDate ,tc:tc},
+                success:function(data){
+                    if(data==true){
+                        $('#UpdateForm').submit();
+                    }
+                    else{
+                       
+                        Swal.fire('Lütfen bilgilerinizi kontrol ediniz!', '', 'error')
+                    }
+                }
+            })
+        }
+        function CheckCustomerUpdate(){
+            var name = $('#NameUpdate').val();
+            var surname = $('#SurnameUpdate').val();
+            var BirthDate = $('#birthDateUpdate').val();
+            var tc = $('#TCUpdate').val();
+            $.ajax({
+                url: '/Customer/CheckTc',
+                data: { name: name, surname: surname, BirthDate: BirthDate, tc: tc },
+                success: function (data) {
+                    if (data == true) {
+                        $('#AddCustomerForm').submit();
+                    }
+                    else {
+
+                        Swal.fire('Lütfen bilgilerinizi kontrol ediniz!', '', 'error')
+                    }
+                }
+            })
+        }
+        function UpdateCustomer(id){
+            $.ajax({
+                url: '/Customer/GetByCustomer',
+                data:{id:id},
+                success:function(data){
+
+                    $('#updateArea').empty();
+                    $('#updateArea').html(data);
+                    $('#dark-header-modal-update').modal('show')
+                }
+            })
+        }
+    </script>
+}

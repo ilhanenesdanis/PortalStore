@@ -1,0 +1,120 @@
+﻿@using PortalStore.DTO.Category
+@model CustomResponseDto<List<CategoryListDto>>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row mt-2 mb-3">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                @if (Model.Data.Count > 0)
+                {
+                    <div class="row">
+                        <div class="col-m-12 mb-2">
+                            <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#dark-header-modal">Yeni Kategori Ekle</button>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Düzenle</th>
+                                            <th>Kategori Adı</th>
+                                            <th>Eklenme Tarihi</th>
+                                            <th>Aktif/Pasif</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.Data)
+                                        {
+                                            <tr>
+                                                <td><button onclick="UpdateCategory(@item.Id)" class="btn btn-danger">Güncelle</button></td>
+                                                <td>@item.Name</td>
+                                                <td>@item.CreateDate.ToShortDateString()</td>
+                                                <td><button class="btn btn-info" onclick="ChangeStatus(@item.Id)">@(item.Status == true ? "Pasif Yap" : "Aktif Yap")</button></td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<div id="dark-header-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dark-header-modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="AddNewCategory" asp-controller="Category"
+                  data-ajax="true" data-ajax-method="POST"
+                  data-ajax-success="OnSuccess">
+                <div class="modal-header modal-colored-header bg-dark">
+                    <h4 class="modal-title" id="dark-header-modalLabel">Yeni Kategori Ekle</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" placeholder="Kategori Adı" class="form-control" name="Name" />
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-dark">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div id="dark-header-modal-update" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dark-header-modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="UpdateCategory" asp-controller="Category"
+                  data-ajax="true" data-ajax-method="POST"
+                  data-ajax-success="OnSuccess">
+                <div class="modal-header modal-colored-header bg-dark">
+                    <h4 class="modal-title" id="dark-header-modalLabel">Kategori Güncelle</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" placeholder="Kategori Adı" class="form-control" id="CategoryName" name="Name" />
+                </div>
+                <input type="hidden" name="Id" id="CategoryId" />
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-dark">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        function OnSuccess() {
+            $('#dark-header-modal').modal('hide');
+            $('#dark-header-modal-update').modal('hide');
+            Swal.fire('İşlem Başarılı!', '', 'success')
+            LoadPage();
+        }
+        function UpdateCategory(id) {
+            $.ajax({
+                url: '/Category/GetByCategoryId',
+                data: { id: id },
+                success: function (data) {
+                    $('#CategoryName').val(data.name);
+                    $('#CategoryId').val(data.id)
+                    $('#dark-header-modal-update').modal('show');
+                }
+            })
+        }
+        function ChangeStatus(id) {
+            $.ajax({
+                url: '/Category/ChangeStatus',
+                data: { id: id },
+                success: function (data) {
+                    Swal.fire('İşlem Başarılı!', '', 'success')
+                    LoadPage();
+                }
+            })
+        }
+    </script>
+}

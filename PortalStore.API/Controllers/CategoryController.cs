@@ -21,7 +21,7 @@ namespace PortalStore.API.Controllers
         [HttpGet]
         public IActionResult GetAllCategory()
         {
-            var response = _mapper.Map<List<CategoryListDto>>(_categoryService.GetBy(x => x.Status == true).ToList());
+            var response = _mapper.Map<List<CategoryListDto>>(_categoryService.GetAll().ToList());
             if (response.Count > 0)
             {
                 return CreateActionResult(CustomResponseDto<List<CategoryListDto>>.Success(200, response));
@@ -73,6 +73,22 @@ namespace PortalStore.API.Controllers
                 return CreateActionResult(CustomResponseDto<CategoryListDto>.Fail(500, "Kayıt Bulunamadı"));
             }
             return CreateActionResult(CustomResponseDto<UpdateCategoryDto>.Fail(500, "Id 0'dan büyük olmalıdır"));
+        }
+        [HttpGet("{id}")]
+        public IActionResult ChangeStatus(int id)
+        {
+            if (id > 0)
+            {
+                var getbyCategory = _categoryService.GetBy(x => x.Id == id).FirstOrDefault();
+                if (getbyCategory != null)
+                {
+                    getbyCategory.Status = getbyCategory.Status == true ? false : true;
+                    _categoryService.Update(getbyCategory);
+                    return CreateActionResult(CustomResponseDto<CategoryListDto>.Success(200));
+                }
+                return CreateActionResult(CustomResponseDto<CategoryListDto>.Fail(500, "Kayıt Bulunamadı"));
+            }
+            return CreateActionResult(CustomResponseDto<CategoryListDto>.Fail(500, "Id 0'dan büyük olmalıdır"));
         }
     }
 }
