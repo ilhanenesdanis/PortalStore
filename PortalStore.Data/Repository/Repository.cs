@@ -50,7 +50,7 @@ namespace PortalStore.Data.Repository
 
         public IQueryable<T> GetBy(Expression<Func<T, bool>> expression)
         {
-            return _dbSet.Where(expression).AsNoTracking().AsQueryable();
+            return _dbSet.Where(expression).AsQueryable();
         }
 
         public T GetById(int id)

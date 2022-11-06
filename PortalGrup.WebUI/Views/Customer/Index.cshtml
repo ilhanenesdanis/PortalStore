@@ -24,6 +24,7 @@
                                             <th>Doğum Tarihi</th>
                                             <th>Aktif/Pasif</th>
                                             <th>Müşteri Adresleri</th>
+                                            <th>Sepete</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -35,7 +36,8 @@
                                                 <td>@item.Email</td>
                                                 <td>@item.BirthDate.ToShortDateString()</td>
                                                 <td><button class="btn btn-info" onclick="ChangeStatus(@item.Id)">@(item.Status == true ? "Pasif Yap" : "Aktif Yap")</button></td>
-                                                <td><a href="javascript:void(0)" class="btn btn-info" >Müşteri Adresleri</a></td>
+                                                <td><a asp-controller="Address" asp-action="Index" asp-route-customerId="@item.Id" class="btn btn-info">Müşteri Adresleri</a></td>
+                                                <td><a asp-controller="Basket" asp-action="Index" asp-route-customerId="@item.Id" class="btn btn-info">Sepete Git</a></td>
                                             </tr>
                                         }
                                     </tbody>
@@ -96,7 +98,6 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
                 </div>
                 <div id="updateArea">
-
                 </div>
             </form>
         </div>
@@ -110,26 +111,26 @@
             Swal.fire('İşlem Başarılı!', '', 'success')
             LoadPage();
         }
-        function CheckCustomer(){
-            var name=$('#Name').val();
-            var surname=$('#Surname').val();
+        function CheckCustomer() {
+            var name = $('#Name').val();
+            var surname = $('#Surname').val();
             var BirthDate = $('#birthDate').val();
             var tc = $('#TC').val();
             $.ajax({
                 url: '/Customer/CheckTc',
-                data: { name: name, surname: surname, BirthDate: BirthDate ,tc:tc},
-                success:function(data){
-                    if(data==true){
+                data: { name: name, surname: surname, BirthDate: BirthDate, tc: tc },
+                success: function (data) {
+                    if (data == true) {
                         $('#UpdateForm').submit();
                     }
-                    else{
-                       
+                    else {
+
                         Swal.fire('Lütfen bilgilerinizi kontrol ediniz!', '', 'error')
                     }
                 }
             })
         }
-        function CheckCustomerUpdate(){
+        function CheckCustomerUpdate() {
             var name = $('#NameUpdate').val();
             var surname = $('#SurnameUpdate').val();
             var BirthDate = $('#birthDateUpdate').val();
@@ -148,15 +149,25 @@
                 }
             })
         }
-        function UpdateCustomer(id){
+        function UpdateCustomer(id) {
             $.ajax({
                 url: '/Customer/GetByCustomer',
-                data:{id:id},
-                success:function(data){
+                data: { id: id },
+                success: function (data) {
 
                     $('#updateArea').empty();
                     $('#updateArea').html(data);
                     $('#dark-header-modal-update').modal('show')
+                }
+            })
+        }
+        function ChangeStatus(id) {
+            $.ajax({
+                url: '/Customer/ChangeCustomerStatus',
+                data: { id: id },
+                success: function () {
+                    Swal.fire('İşlem Başarılı!', '', 'success')
+                    LoadPage();
                 }
             })
         }

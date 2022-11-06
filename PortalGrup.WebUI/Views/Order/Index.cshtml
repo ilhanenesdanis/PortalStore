@@ -1,0 +1,56 @@
+﻿@using PortalStore.DTO.Order
+@model List<OrderListDto>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row mt-2 mb-3">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Müşteri Adı Soyadı</th>
+                                        <th>Müşteri Adresi</th>
+                                        <th>Toplam Tutar</th>
+                                        <th>Sipariş İptali</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>@item.Customer.FirstName @item.Customer.LastName</td>
+                                            <td>@item.Address.AddressLine</td>
+                                            <td>@item.TotalPrice</td>
+                                            <td><button class="btn btn-danger" onclick="CancelOrder(@item.Id)">İptal Et</button></td>
+                                        </tr>
+
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        function CancelOrder(id) {
+            $.ajax({
+                url: '/Order/CancelOrder',
+                data: { id: id },
+                success: function () {
+                    Swal.fire('İşlem Başarılı!', '', 'success')
+                    LoadPage();
+                }
+            })
+        }
+    </script>
+}

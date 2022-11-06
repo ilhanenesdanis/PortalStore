@@ -50,6 +50,12 @@ namespace PortalStore.WebUI.Controllers
             var post=_apiHandler.PostApiString(updateCustomerDto, url);
             return Json(new { success = true });
         }
+        public JsonResult ChangeCustomerStatus(int id)
+        {
+            var url = _configuration["BaseURL"] + UrlStrings.ChangeCustomerStatus + "/" + id;
+            var post = _apiHandler.GetApi<CustomResponseDto<UpdateCustomerDto>>(url);
+            return Json(new { success = true });
+        }
 
     }
 }

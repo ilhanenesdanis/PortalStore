@@ -1,0 +1,24 @@
+﻿@using PortalStore.WebUI.Models
+@model ProductVM
+<div class="row">
+    <div class="col-md-12 mb-2">
+        <select class="form-control" name="CategoryId">
+            <option>Seçiniz...</option>
+            @foreach (var item in Model.Category)
+            {
+                var selected = item.Id == Model.UpdateProduct.CategoryId ? true : false;
+                <option value="@item.Id" selected="">@item.Name</option>
+            }
+        </select>
+    </div>
+    <div class="col-md-12 mb-2">
+        <input type="text" placeholder="Ürün Adı" class="form-control" name="Name" value="@Model.UpdateProduct.Name" />
+    </div>
+    <div class="col-md-12 mb-2">
+        <input type="text" placeholder="Ürün Açıklaması" class="form-control" value="@Model.UpdateProduct.Description" name="Description" />
+    </div>
+    <div class="col-md-12 mb-2">
+        <input type="text" placeholder="Ürün Fiyatı" class="form-control" value="@Model.UpdateProduct.Price" name="Price" />
+    </div>
+    <input type="hidden" name="Id" value="@Model.UpdateProduct.Id" />
+</div>

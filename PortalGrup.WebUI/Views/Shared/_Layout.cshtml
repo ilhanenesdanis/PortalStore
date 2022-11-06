@@ -63,9 +63,27 @@
                         </a>
                     </li>
                     <li class="side-nav-item">
+                        <a asp-controller="Product" asp-action="Index" class="side-nav-link">
+                            <i class="uil-calender"></i>
+                            <span> Ürünler </span>
+                        </a>
+                    </li>
+                    <li class="side-nav-item">
                         <a asp-controller="Customer" asp-action="Index" class="side-nav-link">
                             <i class="uil-calender"></i>
                             <span> Müşteriler </span>
+                        </a>
+                    </li>
+                    <li class="side-nav-item">
+                        <a asp-controller="Basket" asp-action="Index" class="side-nav-link">
+                            <i class="uil-calender"></i>
+                            <span> Sepet </span>
+                        </a>
+                    </li>
+                     <li class="side-nav-item">
+                        <a asp-controller="Order" asp-action="Index" class="side-nav-link">
+                           <i class="uil-calender"></i>
+                            <span> Siparişler </span>
                         </a>
                     </li>
 
@@ -121,12 +139,10 @@
     <!-- bundle -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <script src="/assets/js/vendor.min.js"></script>
-
-    <script src="/assets/js/app.min.js"></script>
-    <script src="/lib/jquery/dist/jquery.min.js"></script>
-
-
+    <script src="~/assets/js/vendor.min.js"></script>
+    <script src="~/assets/js/app.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
 
 
     <script src="/assets/js/vendor/responsive.bootstrap5.min.js"></script>

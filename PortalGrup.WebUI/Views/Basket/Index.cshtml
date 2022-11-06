@@ -1,0 +1,134 @@
+﻿@using PortalStore.DTO.Basket
+@model List<BasketListDto>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row mt-2 mb-3">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    @if (ViewBag.customerId > 0&&Model!=null)
+                    {
+                        <div class="col-m-12 mb-2">
+                            <button type="button" class="btn btn-dark" onclick="CreateOrder(@ViewBag.customerId)">Sipariş Oluştur</button>
+                        </div>
+                    }
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Müşteri Adı Soyadı</th>
+                                        <th>Ürün Adı</th>
+                                        <th>Sipariş Adedi </th>
+                                        <th>Toplam Fiyat</th>
+                                        <th>Kaldır</th>
+                                        <th>Güncelle</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model != null)
+                                    {
+                                        @foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td>@item.Customer.FirstName @item.Customer.LastName</td>
+                                                <td>@item.Product.Name</td>
+                                                <td><input type="number" class="form-control" value="@item.Quantity" id="Quantity" /></td>
+                                                <td>@(item.Quantity * item.Product.Price)</td>
+                                                <td><button onclick="RemoveBasket(@item.Id)" class="btn btn-danger">Kaldır</button></td>
+                                                <td><button onclick="UpdateBasket(@item.Id)" class="btn btn-info">Güncelle</button></td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@if (ViewBag.customerId > 0)
+{
+    <div id="dark-header-modal-update" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dark-header-modalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form asp-action="CreateOrder" asp-controller="Basket"
+                  data-ajax="true" data-ajax-method="POST"
+                  data-ajax-success="OnSuccess">
+                    <div class="modal-header modal-colored-header bg-dark">
+                        <h4 class="modal-title" id="dark-header-modalLabel">Sipariş Oluştur</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12 mb-2">
+                                <select class="form-control" name="AddressId" data-placeholder="Seçiniz ..." id="AddresList"></select>
+                            </div>
+                            @if(Model!=null){
+                                <input type="hidden" value="@(Model.Sum(x=>x.Quantity)*Model.Sum(x=>x.Product.Price))" name="TotalPrice" />
+                            }
+                            
+                            <input type="hidden" name="CustomerId" value="@ViewBag.customerId" />
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-dark">Kaydet</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts{
+    <script>
+        function OnSuccess() {
+            $('#dark-header-modal').modal('hide');
+            $('#dark-header-modal-update').modal('hide');
+            Swal.fire('İşlem Başarılı!', '', 'success')
+            LoadPage();
+        }
+        function UpdateBasket(id) {
+            var quantity = $('#Quantity').val();
+            $.ajax({
+                url: '/Basket/UpdateBasket',
+                data: { quantity: quantity, id: id },
+                success: function () {
+                    Swal.fire('İşlem Başarılı!', '', 'success')
+                    LoadPage();
+                }
+            })
+        }
+        function RemoveBasket(id) {
+            $.ajax({
+                url: '/Basket/RemoveBasket',
+                data: { id: id },
+                success: function () {
+                    Swal.fire('İşlem Başarılı!', '', 'success')
+                    LoadPage();
+                }
+            })
+        }
+        function CreateOrder(customerId) {
+            $.ajax({
+                url: '/Basket/GetCustomerAddress',
+                data: { customerId: customerId },
+                success: function (data) {
+                    $('#AddresList').empty();
+                    console.log(data);
+                    for (var i = 0; i < data.length; i++) {
+                        $('#AddresList').append('<option value="' + data[i].id + '">' + data[i].addressLine + '</option>')
+                    }
+                    $('#dark-header-modal-update').modal('show')
+                }
+            })
+        }
+    </script>
+}

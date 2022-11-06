@@ -1,0 +1,186 @@
+﻿@using PortalStore.WebUI.Models
+@model ProductVM
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row mt-2 mb-3">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+
+                <div class="row">
+                    <div class="col-m-12 mb-2">
+                        <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#dark-header-modal">Yeni Kategori Ekle</button>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Düzenle</th>
+                                        <th>Ürün Adı</th>
+                                        <th>Önceki Fiyat</th>
+                                        <th>Fiyat</th>
+                                        <th>Kategori</th>
+                                        <th>Sepete Ekle</th>
+                                        <th>Aktif/Pasif</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.Product)
+                                    {
+                                        <tr>
+                                            <td><button onclick="UpdateCategory(@item.Id)" class="btn btn-danger">Güncelle</button></td>
+                                            <td>@item.Name</td>
+                                            <td>@item.OldPrice</td>
+                                            <td>@item.Price</td>
+                                            <td>@item.Category.Name</td>
+                                            <td><button class="btn btn-success" onclick="AddToBasket(@item.Id)">Ekle</button></td>
+                                            <td><button class="btn btn-info" onclick="ChangeStatus(@item.Id)">@(item.Status == true ? "Pasif Yap" : "Aktif Yap")</button></td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="dark-header-modal" class="modal fade" tabindex="1" role="dialog" aria-labelledby="dark-header-modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="AddNewProduct" asp-controller="Product"
+                  data-ajax="true" data-ajax-method="POST"
+                  data-ajax-success="OnSuccess">
+                <div class="modal-header modal-colored-header bg-dark">
+                    <h4 class="modal-title" id="dark-header-modalLabel">Yeni Ürün Ekle</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12 mb-2">
+                            <select class="form-control" name="CategoryId" data-placeholder="Seçiniz ...">
+                                <option>Seçiniz...</option>
+                                @foreach (var item in Model.Category)
+                                {
+                                    <option value="@item.Id">@item.Name</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-12 mb-2">
+                            <input type="text" placeholder="Ürün Adı" class="form-control" name="Name" />
+                        </div>
+                        <div class="col-md-12 mb-2">
+                            <input type="text" placeholder="Ürün Açıklaması" class="form-control" name="Description" />
+                        </div>
+                        <div class="col-md-12 mb-2">
+                            <input type="text" placeholder="Ürün Fiyatı" class="form-control" name="Price" />
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-dark">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div id="dark-header-modal-update" class="modal fade" role="dialog" aria-labelledby="dark-header-modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="UpdateProduct" asp-controller="Product"
+                  data-ajax="true" data-ajax-method="POST"
+                  data-ajax-success="OnSuccess">
+                <div class="modal-header modal-colored-header bg-dark">
+                    <h4 class="modal-title" id="dark-header-modalLabel">Kategori Güncelle</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                </div>
+                <div class="modal-body" id="UpdateModal">
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-dark">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div id="dark-header-modal-Basket" class="modal fade" role="dialog" aria-labelledby="dark-header-modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="AddBasket" asp-controller="Product"
+                  data-ajax="true" data-ajax-method="POST"
+                  data-ajax-success="OnSuccess">
+                <div class="modal-header modal-colored-header bg-dark">
+                    <h4 class="modal-title" id="dark-header-modalLabel">Sepete Ekle</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                </div>
+                <div class="modal-body" id="UpdateModal">
+                    <div class="row">
+                        <div class="col-md-12 mb-2">
+                            <input type="hidden" value="" id="ProductId" name="ProductId" />
+                            <select class="form-control" name="CustomerId" id="CustomerList" data-placeholder="Seçiniz ...">
+                                <option>Seçiniz...</option>
+
+                            </select>
+                        </div>
+                        <div class="col-md-12 mb-2">
+                            <input type="number" placeholder="Ürün Sayısı" class="form-control" name="Quantity" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-dark">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        function OnSuccess() {
+            $('#dark-header-modal').modal('hide');
+            $('#dark-header-modal-update').modal('hide');
+            Swal.fire('İşlem Başarılı!', '', 'success')
+            LoadPage();
+        }
+        function UpdateCategory(id) {
+            $.ajax({
+                url: '/Product/GetByProduct',
+                data: { id: id },
+                success: function (data) {
+                    $('#UpdateModal').empty();
+                    $('#UpdateModal').html(data);
+                    $('#dark-header-modal-update').modal('show');
+                }
+            })
+        }
+        function ChangeStatus(id) {
+            $.ajax({
+                url: '/Product/ChangeStatus',
+                data: { id: id },
+                success: function () {
+                    Swal.fire('İşlem Başarılı!', '', 'success')
+                    LoadPage();
+                }
+            })
+        }
+        function AddToBasket(id) {
+            $.ajax({
+                url: '/Product/GetCustomerList',
+                success: function (data) {
+                    $('#CustomerList').empty();
+                    for (var i = 0; i <= data.length; i++) {
+                        $('#CustomerList').append('<option value="' + data[i].id + '">' + data[i].firstName + " " + data[i].lastName + '</option>')
+                    }
+                }
+            });
+            $('#ProductId').val(id);
+            $('#dark-header-modal-Basket').modal('show');
+        }
+    </script>
+
+}

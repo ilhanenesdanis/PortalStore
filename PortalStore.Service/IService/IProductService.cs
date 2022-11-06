@@ -5,5 +5,6 @@ namespace PortalStore.Service.IService
 {
     public interface IProductService:IService<Product>
     {
+        List<Product> GetAllProduct();
     }
 }

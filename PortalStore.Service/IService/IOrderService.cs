@@ -5,5 +5,6 @@ namespace PortalStore.Service.IService
 {
     public interface IOrderService:IService<Order>
     {
+        List<Order> GetAllOrder();
     }
 }

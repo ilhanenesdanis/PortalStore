@@ -9,6 +9,7 @@ namespace PortalStore.DTO.Product
         public string Description { get; set; }
         public decimal OldPrice { get; set; }
         public decimal Price { get; set; }
-        public CategoryListDto CategoryListDto { get; set; }
+        public int CategoryId { get; set; }
+        public CategoryListDto Category { get; set; }
     }
 }

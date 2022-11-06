@@ -36,6 +36,7 @@ namespace PortalStore.Service.Dependencies
             services.AddScoped<IOrderRepository,OrderRepository>();
             services.AddScoped<IOrderItemRepository,OrderItemRepository>();
             services.AddScoped<IProductRepository,ProductRepository>();
+            services.AddScoped<IBasketRepository, BasketRepository>();
             //Service
             services.AddScoped<IAddressService, AddressService>();
             services.AddScoped<ICategoryService,CategoryService>();
@@ -43,6 +44,7 @@ namespace PortalStore.Service.Dependencies
             services.AddScoped<IOrderService,OrderService>();
             services.AddScoped<IOrderItemService,OrderItemService>();
             services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IBasketService, BasketService>();
             
         }
     }

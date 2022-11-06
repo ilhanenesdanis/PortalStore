@@ -1,0 +1,131 @@
+﻿@using PortalStore.DTO.Address
+@model List<AddressListDto>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row mt-2 mb-3">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-m-12 mb-2">
+                        <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#dark-header-modal">Yeni Müşteri Adresi Ekle</button>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Düzenle</th>
+                                        <th>Müşteri Adı Soyadı</th>
+                                        <th>Adress Satırı</th>
+                                        <th>Ülke </th>
+                                        <th>Şehir</th>
+                                        <th>Bölge</th>
+                                        <th>Aktif/Pasif</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td><button onclick="UpdateAddress(@item.Id)" class="btn btn-danger">Güncelle</button></td>
+                                            <td>@item.Customer.FirstName @item.Customer.LastName</td>
+                                            <td>@item.AddressLine</td>
+                                            <td>@item.Country</td>
+                                            <td>@item.City</td>
+                                            <td>@item.District</td>
+                                            <td><button class="btn btn-info" onclick="ChangeStatus(@item.Id)">@(item.Status == true ? "Pasif Yap" : "Aktif Yap")</button></td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="dark-header-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dark-header-modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="AddNewCustomerAddress" asp-controller="Address"
+                  data-ajax="true" data-ajax-method="POST"
+                  data-ajax-success="OnSuccess">
+                <div class="modal-header modal-colored-header bg-dark">
+                    <h4 class="modal-title" id="dark-header-modalLabel">Yeni Adres Ekle</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" required placeholder="Adres Başlığı" class="form-control" name="AddressLine" />
+                </div>
+                <div class="modal-body">
+                    <input type="text" required placeholder="Ülke" class="form-control" name="Country" />
+                </div>
+                <div class="modal-body">
+                    <input type="text" required placeholder="Şehir" class="form-control" name="City" />
+                </div>
+                <div class="modal-body">
+                    <input type="text" required placeholder="Bölge" class="form-control" name="District" />
+                </div>
+                <div class="modal-body">
+                    <input type="number" required placeholder="Posta Kodu" class="form-control" name="ZipCode" />
+                </div>
+                <input value="@Model.FirstOrDefault().CustomerId" name="CustomerId" type="hidden" />
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-dark">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div id="dark-header-modal-update" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dark-header-modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="UpdateAddress" asp-controller="Address"
+                  data-ajax="true" data-ajax-method="POST"
+                  data-ajax-success="OnSuccess">
+                <div class="modal-header modal-colored-header bg-dark">
+                    <h4 class="modal-title" id="dark-header-modalLabel">Adres Güncelle</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                </div>
+                <div id="UpdateArea"></div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-dark">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        function OnSuccess() {
+            $('#dark-header-modal').modal('hide');
+            $('#dark-header-modal-update').modal('hide');
+            Swal.fire('İşlem Başarılı!', '', 'success')
+            LoadPage();
+        }
+        function UpdateAddress(id) {
+            $.ajax({
+                url: '/Address/GetAddress',
+                data: { id: id },
+                success: function (data) {
+                    $('#UpdateArea').empty();
+                    $('#UpdateArea').html(data);
+                    $('#dark-header-modal-update').modal('show');
+                }
+            })
+        }
+        function ChangeStatus(id){
+            $.ajax({
+                url: '/Address/ChangeStatus',
+                data:{id:id},
+                success:function(){
+                    Swal.fire('İşlem Başarılı!', '', 'success')
+                    LoadPage();
+                }
+            })
+        }
+    </script>
+}
