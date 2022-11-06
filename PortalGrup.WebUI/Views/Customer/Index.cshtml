@@ -7,12 +7,13 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
-                @if (Model.Data.Count > 0)
-                {
-                    <div class="row">
-                        <div class="col-m-12 mb-2">
-                            <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#dark-header-modal">Yeni Müşteri Ekle</button>
-                        </div>
+
+                <div class="row">
+                    <div class="col-m-12 mb-2">
+                        <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#dark-header-modal">Yeni Müşteri Ekle</button>
+                    </div>
+                    @if (Model.Data != null)
+                    {
                         <div class="col-md-12">
                             <div class="table-responsive">
                                 <table class="table table-bordered table-striped table-hover">
@@ -44,8 +45,9 @@
                                 </table>
                             </div>
                         </div>
-                    </div>
-                }
+                    }
+                </div>
+
 
 
             </div>
@@ -121,7 +123,7 @@
                 data: { name: name, surname: surname, BirthDate: BirthDate, tc: tc },
                 success: function (data) {
                     if (data == true) {
-                        $('#UpdateForm').submit();
+                        $('#AddCustomerForm').submit();
                     }
                     else {
 
@@ -140,7 +142,7 @@
                 data: { name: name, surname: surname, BirthDate: BirthDate, tc: tc },
                 success: function (data) {
                     if (data == true) {
-                        $('#AddCustomerForm').submit();
+                        $('#UpdateForm').submit();
                     }
                     else {
 
